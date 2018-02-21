@@ -1,3 +1,4 @@
+# Jaspreet Randhawa (jsr15) and Jinsung Ha (jsh114) 
 defmodule Scout do
 
     def start leader, acceptors, b do
@@ -13,22 +14,20 @@ defmodule Scout do
     end #_start
 
     def next leader, acceptors, wait_for, pvalues, b do
-
         receive do
         {:p1b, acceptor, ballot_num, pvalue} ->
             if ballot_num == b do
-                pvalues = MapSet.union pvalues, pvalue
-                wait_for = List.delete wait_for, acceptor
                 if (length wait_for) < (length acceptors) / 2 do
                     send leader, {:adopted, b, pvalues}
-                    Process.exit(self(), :normal)
+                else
+                    pvalues = MapSet.union pvalues, pvalue
+                    wait_for = List.delete wait_for, acceptor
+                    next leader, acceptors, wait_for, pvalues, b
                 end #_if
             else
                 send leader, {:preempted, ballot_num}
-                Process.exit(self(), :normal)
             end #_if
         end #_receive
-        next leader, acceptors, wait_for, pvalues, b
     end #_next
 
 end #_Scout

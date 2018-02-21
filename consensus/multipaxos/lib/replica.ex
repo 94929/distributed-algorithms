@@ -1,3 +1,4 @@
+# Jaspreet Randhawa (jsr15) and Jinsung Ha (jsh114) 
 defmodule Replica do
 
     def start config, database, monitor do
@@ -16,11 +17,13 @@ defmodule Replica do
 
     def next leaders, database, monitor, slot_in, slot_out, requests, proposals, decisions, config do
         receive do
-        {:request, c} ->
+        {:client_request, c} ->
+            send monitor, {:client_request, config.server_num}
             requests = MapSet.put requests, c
         {:decision, s, c} ->
+            #IO.puts "decisions"
             decisions = Map.put decisions, s, c
-            {proposals, requests, slot_out} = apply_decisions decisions, proposals, requests, slot_out, database, monitor
+            {proposals, requests, slot_out} = apply_decisions decisions, proposals, requests, slot_out, database, monitor, config
         end #_receive
         # TODO:: remember to UPDATE STATE
         {slot_in, requests, proposals} = propose leaders, slot_in, slot_out, MapSet.to_list(requests), proposals, decisions, config
@@ -28,7 +31,8 @@ defmodule Replica do
         next leaders, database, monitor, slot_in, slot_out, requests, proposals, decisions, config
     end #_next
 
-    def apply_decisions decisions, proposals, requests, slot_out, database, monitor do
+    def apply_decisions decisions, proposals, requests, slot_out, database, monitor, config do
+        #IO.puts "apply decisions"
         case decisions[slot_out] do
         nil -> 
             {proposals, requests, slot_out}
@@ -40,8 +44,8 @@ defmodule Replica do
                     requests = MapSet.put requests, p_command
                 end #_if
             end #_if
-            slot_out = perform d_command, decisions, slot_out, database, monitor
-            apply_decisions decisions, proposals, requests, slot_out, database, monitor
+            slot_out = perform d_command, decisions, slot_out, database, monitor, config
+            apply_decisions decisions, proposals, requests, slot_out, database, monitor, config
         end #_case
     end #_apply_decisions
 
@@ -57,12 +61,12 @@ defmodule Replica do
         end
     end
 
-    def perform d_command, decisions, slot_out, database, monitor do
+    def perform d_command, decisions, slot_out, database, monitor, config do
         slot_found = perform_helper 1, slot_out, decisions, d_command
         if not slot_found do
             {client, cid, op} = d_command
             send database, {:execute, op}
-            send client, {:response, cid, true}
+            send client, {:reply, cid, true}
         end #_if
         slot_out + 1
     end #_perform

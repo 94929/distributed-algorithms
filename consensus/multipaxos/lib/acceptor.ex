@@ -1,3 +1,4 @@
+# Jaspreet Randhawa (jsr15) and Jinsung Ha (jsh114) 
 defmodule Acceptor do
     
     def start config do
@@ -10,17 +11,24 @@ defmodule Acceptor do
         
         receive do
         {:p1a, scout, b} ->
-            if b > ballot_num do
-                ballot_num = b
-            end
+            #IO.puts "p1a received"
+            ballot_num =
+                cond do
+                    b > ballot_num -> b
+                    true -> ballot_num
+                end
             send scout, {:p1b, self(), ballot_num, accepted}
+            next ballot_num, accepted
         {:p2a, commander, {b, s, c}} ->
-            if ballot_num == b do
-                accepted = MapSet.put accepted, {b, s, c}
-            end
+            #IO.puts "p2a received"
+            accepted = 
+                cond do
+                    ballot_num == b -> MapSet.put accepted, {b, s, c}
+                    true -> accepted
+                end
             send commander, {:p2b, self(), ballot_num}
+            next ballot_num, accepted
         end
-        next ballot_num, accepted
     end #_next
 end
 

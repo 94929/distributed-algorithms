@@ -1,4 +1,5 @@
 
+# Jaspreet Randhawa (jsr15) and Jinsung Ha (jsh114) 
 # distributed algorithms, n.dulay, 2 feb 18
 # multi-paxos, configuration parameters v1
 
@@ -10,15 +11,15 @@ defmodule Configuration do
       docker_delay: 5_000,	# time (ms) to wait for containers to start up
 
       max_requests: 500,   	# max requests each client will make
-      client_sleep: 5,	        # time (ms) to sleep before sending new request
-      client_stop:  10_000,	# time (ms) to stop sending further requests
+      client_sleep: 10,	        # time (ms) to sleep before sending new request
+      client_stop:  20_000,	# time (ms) to stop sending further requests
       n_accounts:   100,	# number of active bank accounts
       max_amount:   1000,	# max amount moved between accounts
 
       print_after:  1_000,	# print transaction log summary every print_after msecs
 
       # add your own here
-      window: 100
+      window: 10
       }
     end
 
