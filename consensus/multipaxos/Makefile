@@ -4,13 +4,11 @@
 # Makefile, v2 
 
 SERVERS = 3
-CLIENTS = 2
+CLIENTS = 1
 
 CONFIG  = 1
 
-WINDOW  = 10
 # ----------------------------------------------------------------------
-
 MAIN         = Paxos.main
 SINGLE_SETUP = single
 DOCKER_SETUP = docker

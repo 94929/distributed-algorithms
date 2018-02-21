@@ -6,3 +6,4 @@ defmodule PaxosTest do
     assert Paxos.hello() == :world
   end
 end
+
