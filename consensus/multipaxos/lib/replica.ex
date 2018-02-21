@@ -15,7 +15,7 @@ defmodule Replica do
         decisions = Map.new
 
         next leaders, database, monitor, slot_in, slot_out, requests, proposals, decisions, config
-    end #_start
+    end # start
 
     def next leaders, database, monitor, slot_in, slot_out, requests, proposals, decisions, config do
         receive do
@@ -27,11 +27,10 @@ defmodule Replica do
             decisions = Map.put decisions, s, c
             {proposals, requests, slot_out} = apply_decisions decisions, proposals, requests, slot_out, database, monitor, config
         end #_receive
-        # TODO:: remember to UPDATE STATE
         {slot_in, requests, proposals} = propose leaders, slot_in, slot_out, MapSet.to_list(requests), proposals, decisions, config
         requests = MapSet.new requests
         next leaders, database, monitor, slot_in, slot_out, requests, proposals, decisions, config
-    end #_next
+    end # next
 
     def apply_decisions decisions, proposals, requests, slot_out, database, monitor, config do
         #IO.puts "apply decisions"
@@ -49,7 +48,7 @@ defmodule Replica do
             slot_out = perform d_command, decisions, slot_out, database, monitor, config
             apply_decisions decisions, proposals, requests, slot_out, database, monitor, config
         end #_case
-    end #_apply_decisions
+    end # apply_decisions
 
     def perform_helper n, slot_out, decisions, d_command do
         c = decisions[n]
@@ -71,7 +70,7 @@ defmodule Replica do
             send client, {:reply, cid, true}
         end #_if
         slot_out + 1
-    end #_perform
+    end # perform
 
     def propose leaders, slot_in, slot_out, requests, proposals, decisions, config do
         cond do
@@ -87,7 +86,7 @@ defmodule Replica do
         true ->
             {slot_in, requests, proposals}
         end #_cond
-    end #_propose
+    end # propose
     
-end #_Replica
+end # Replica
 

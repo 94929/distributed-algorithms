@@ -1,5 +1,4 @@
 
-# Jaspreet Randhawa (jsr15) and Jinsung Ha (jsh114) 
 # distributed algorithms, n.dulay 2 feb 18
 # coursework 2, paxos made moderately complex
 

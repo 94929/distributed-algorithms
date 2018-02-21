@@ -1,4 +1,6 @@
+
 # Jaspreet Randhawa (jsr15) and Jinsung Ha (jsh114) 
+
 defmodule Commander do
 
     def start leader, acceptors, replicas, {b, s, c} do

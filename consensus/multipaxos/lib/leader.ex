@@ -1,4 +1,6 @@
+
 # Jaspreet Randhawa (jsr15) and Jinsung Ha (jsh114) 
+
 defmodule Leader do
 
     def start config do
@@ -12,7 +14,7 @@ defmodule Leader do
         spawn Scout, :start, [self(), acceptors, ballot_num]
 
         next acceptors, replicas, ballot_num, active, proposals
-    end #_start
+    end # start
 
     def next acceptors, replicas, ballot_num, active, proposals do
 
@@ -48,7 +50,7 @@ defmodule Leader do
                 end #_if
             next acceptors, replicas, ballot_num, active, proposals
         end #_receive
-    end #_next
+    end # next
 
     def update_proposals max, pvals, proposals do
         case pvals do
@@ -66,7 +68,7 @@ defmodule Leader do
                 end #_if
             update_proposals max, pvals, proposals
         end #_case
-    end #_update_pvals
+    end # update_pvals
 
-end #_Leader
+end # Leader
 

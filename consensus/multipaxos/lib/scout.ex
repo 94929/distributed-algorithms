@@ -1,4 +1,6 @@
+
 # Jaspreet Randhawa (jsr15) and Jinsung Ha (jsh114) 
+
 defmodule Scout do
 
     def start leader, acceptors, b do
@@ -11,7 +13,7 @@ defmodule Scout do
         end # _for
 
         next leader, acceptors, wait_for, pvalues, b
-    end #_start
+    end # start
 
     def next leader, acceptors, wait_for, pvalues, b do
         receive do
@@ -28,7 +30,7 @@ defmodule Scout do
                 send leader, {:preempted, ballot_num}
             end #_if
         end #_receive
-    end #_next
+    end # next
 
-end #_Scout
+end # Scout
 

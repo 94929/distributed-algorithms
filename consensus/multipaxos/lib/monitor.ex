@@ -1,5 +1,4 @@
 
-# Jaspreet Randhawa (jsr15) and Jinsung Ha (jsh114) 
 # distributed algorithms, n.dulay 2 feb 18
 # coursework 2, paxos made moderately complex
 
@@ -8,7 +7,7 @@ defmodule Monitor do
     def start config do
       Process.send_after self(), :print, config.print_after
       next config, 0, Map.new, Map.new, Map.new
-    end #_start
+    end # start
 
     defp next config, clock, requests, updates, transactions do
       receive do
@@ -61,7 +60,7 @@ defmodule Monitor do
         IO.puts "monitor: unexpected message"
         System.halt
       end #_receive
-    end #_next
+    end # next
 
 end # Monitor
 
