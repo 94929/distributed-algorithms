@@ -25,3 +25,5 @@ erl_crash.dump
 # Ignore README.md
 README.md
 
+# Ignore .beam
+*.beam

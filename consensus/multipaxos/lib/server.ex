@@ -11,7 +11,7 @@ defmodule Server do
       database = spawn Database, :start, [config, monitor]
       replica  = spawn Replica,  :start, [config, database, monitor]
       leader   = spawn Leader,   :start, [config]
-      acceptor = spawn Acceptor, :start, [config]
+      acceptor = spawn Acceptor, :start, []
 
       send paxos, { :config, replica, acceptor, leader }
     end # start
