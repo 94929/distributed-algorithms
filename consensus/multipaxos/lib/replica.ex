@@ -1,4 +1,6 @@
+
 # Jaspreet Randhawa (jsr15) and Jinsung Ha (jsh114) 
+
 defmodule Replica do
 
     def start config, database, monitor do

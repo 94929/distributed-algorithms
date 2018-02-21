@@ -13,6 +13,8 @@ defmodule Paxos do
     end # main
 
     defp start config do
+      IO.puts "nb_servers = #{config.n_servers}, nb_clients = #{config.n_clients}"
+
       monitor = spawn Monitor, :start, [config] 
       for s <- 1 .. config.n_servers do 
         node_name = DAC.node_name config.setup, "server", s	
@@ -30,7 +32,7 @@ defmodule Paxos do
       for leader  <- leaders,  do: send leader,  { :bind, acceptors, replicas }
 
       for c <- 1 .. config.n_clients do 
-        node_name = DAC.node_name config.setup, "client", c 	
+        node_name = DAC.node_name config.setup, "client", c
         DAC.node_spawn node_name, Client, :start, [config, c, replicas] 
       end
 
