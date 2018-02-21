@@ -7,7 +7,7 @@ defmodule Commander do
 
     def next leader, acceptors, replicas, wait_for, {b, s, c} do
         receive do
-        {:p2b acceptor, ballot_num} ->
+        {:p2b, acceptor, ballot_num} ->
             if ballot_num == b do
                 wait_for = List.delete wait_for, acceptor
                 if (length wait_for) < (length acceptors) / 2 do

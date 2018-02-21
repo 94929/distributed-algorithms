@@ -15,9 +15,10 @@ defmodule Configuration do
       n_accounts:   100,	# number of active bank accounts
       max_amount:   1000,	# max amount moved between accounts
 
-      print_after:  1_000	# print transaction log summary every print_after msecs
+      print_after:  1_000,	# print transaction log summary every print_after msecs
 
       # add your own here
+      window: 100
       }
     end
 

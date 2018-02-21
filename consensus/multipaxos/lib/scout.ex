@@ -17,7 +17,7 @@ defmodule Scout do
         receive do
         {:p1b, acceptor, ballot_num, pvalue} ->
             if ballot_num == b do
-                pvalues = MapSet.put pvalues, pvalue              
+                pvalues = MapSet.union pvalues, pvalue
                 wait_for = List.delete wait_for, acceptor
                 if (length wait_for) < (length acceptors) / 2 do
                     send leader, {:adopted, b, pvalues}

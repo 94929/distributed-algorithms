@@ -1,7 +1,10 @@
 defmodule Leader do
 
-    def start acceptors, replicas do
-
+    def start config do
+        {replicas, acceptors} = receive do
+            {:bind, acceptors, replicas} ->
+                {replicas, acceptors}
+            end #_receive
         ballot_num = {0, self()}
         active = false
         proposals = Map.new
@@ -15,7 +18,7 @@ defmodule Leader do
         receive do 
         {:propose, s, c} ->
             # there is no command in proposals that has s 
-            if Map.has_key ? proposals, s do
+            if Map.has_key? proposals, s do
                 proposals = Map.put proposals, s, c
                 if active do
                     spawn Commander, :start, [self(), acceptors, replicas, {ballot_num, s, c}]
@@ -39,7 +42,7 @@ defmodule Leader do
     end #_next
 
     def update_proposals max, pvals, proposals do
-
+        IO.puts "hello"  
         case pvals do
         [] -> 
             proposals
