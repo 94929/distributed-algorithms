@@ -1,11 +1,13 @@
+
 # Jaspreet Randhawa (jsr15) and Jinsung Ha (jsh114) 
+
 defmodule Acceptor do
     
     def start config do
         ballot_num = 0
         accepted = MapSet.new
         next ballot_num, accepted
-    end #_start
+    end # start
 
     def next ballot_num, accepted do
         
@@ -28,7 +30,7 @@ defmodule Acceptor do
                 end
             send commander, {:p2b, self(), ballot_num}
             next ballot_num, accepted
-        end
-    end #_next
-end
+        end #_receive
+    end # next
+end # Acceptor
 

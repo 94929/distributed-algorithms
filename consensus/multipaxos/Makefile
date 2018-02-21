@@ -4,7 +4,7 @@
 # Makefile, v2 
 
 SERVERS = 5
-CLIENTS = 250
+CLIENTS = 5
 
 CONFIG  = 1
 

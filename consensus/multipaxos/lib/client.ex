@@ -1,5 +1,4 @@
 
-# Jaspreet Randhawa (jsr15) and Jinsung Ha (jsh114) 
 # distributed algorithms, n.dulay 2 feb 18
 # coursework 2, paxos made moderately complex
 
@@ -37,14 +36,14 @@ defmodule Client do
 
         handle_reply()
         next config, client_num, replicas, sent
-      end
+      end #_receive
     end # next
         
     defp handle_reply do  # this discards all replies received
       receive do
       { :reply, _cid, _result } -> handle_reply()
       after 0 -> true
-      end # receive
+      end #_receive
     end # handle_reply 
 
 end # Client
