@@ -6,7 +6,7 @@
 defmodule Client do
 
     def start config, client_num, replicas do
-      IO.puts ["Starting client ", DAC.node_ip_addr(), "\n"]
+      IO.puts ["Starting client ", DAC.node_ip_addr()]
       Process.send_after self(), :client_stop, config.client_stop
       next config, client_num, replicas, 0
     end # start

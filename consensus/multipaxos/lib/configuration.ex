@@ -19,7 +19,7 @@ defmodule Configuration do
       print_after:  1_000,	# print transaction log summary every print_after msecs
 
       # add your own here
-      window: 10
+      window: 1000              # window size
       }
     end
 

@@ -35,7 +35,6 @@ defmodule Paxos do
         node_name = DAC.node_name config.setup, "client", c
         DAC.node_spawn node_name, Client, :start, [config, c, replicas] 
       end
-
     end # start
 
 end # Paxos
