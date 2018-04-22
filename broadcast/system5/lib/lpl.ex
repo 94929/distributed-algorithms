@@ -1,0 +1,35 @@
+defmodule LPL do
+
+  def start do
+
+    receive do
+      {:bind, beb, reliability} -> next beb, 1, 1, reliability
+    end 
+
+  end
+
+  def next(beb, sendCount, receiveCount, reliability) do
+    # interleave probabilistically
+    # based on how many times the process has sent and received
+    if :rand.uniform < (sendCount / (receiveCount + sendCount)) do
+      receive do 
+        {:pl_message, src, msg} -> 
+          send beb, {:pl_deliver, src, msg}
+          next beb, sendCount, receiveCount + 1, reliability
+      after
+        0 -> next beb, sendCount, receiveCount, reliability
+      end
+    else
+      receive do
+        {:pl_send, dest, msg} -> 
+          if :rand.uniform < reliability do
+            send dest, {:pl_message, self(), msg}
+          end
+          next beb, sendCount + 1, receiveCount, reliability
+      after
+        0 -> next beb, sendCount, receiveCount, reliability
+      end
+    end
+  end
+
+end

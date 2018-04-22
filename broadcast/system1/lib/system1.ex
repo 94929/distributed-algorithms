@@ -1,34 +1,39 @@
 defmodule System1 do
+  
+  def main do
+    IO.puts "System started"
 
-    def main do
-        IO.puts "System started"
+    max_broadcasts = 1000
+    timeout = 3000
+    
+    n = 5
+    peers = for _ <- 0..n-1, do: spawn(Peer, :start, [])
+    sortedPeers = Enum.sort(peers)
+    
+    for i <- 0..n-1, do: send Enum.at(sortedPeers, i), {:bind, sortedPeers, i}
 
-        max_broadcasts = 1000
-        timeout = 3000
+    IO.puts "Broadcasting started"
+    for peer <- sortedPeers, do: send peer, {:broadcast, max_broadcasts, timeout}
 
-        n = 5
-        peers = for _ <- 1..n, do: spawn Peer, :start, []
+  end
+  
+  def main_net do
+    IO.puts "System started"
+    Process.sleep(5000)
 
-        for peer <- peers do
-            send peer, {:broadcast, max_broadcasts, timeout}
-        end
+    max_broadcasts = 1000
+    timeout = 3000
+    
+    n = 5
+    peers = for i <- 0..n-1, do: DAC.node_spawn("peer", i, Peer, :start, [])
+    sortedPeers = Enum.sort(peers)
 
-        IO.puts "Broadcasting started"
-    end # main
+    for i <- 0..n-1, do: send Enum.at(sortedPeers, i), {:bind, sortedPeers, i}
 
-    def main_net do
-        IO.puts "System started"
-        
-        max_broadcasts = 1000
-        timeout = 3000
+    Process.sleep(5000)
+    IO.puts "Broadcasting started"
+    for peer <- sortedPeers, do: send peer, {:broadcast, max_broadcasts, timeout}
 
-        n = 5
-        peers = for i <- 1..n, do: DAC.node_spawn "peer", i, Peer, :start, []
-        for peer <- peers do 
-            send peer, {:broadcast, max_broadcasts, timeout}
-        end
+  end
 
-        IO.puts "System started"
-    end # main_net
 end
-
